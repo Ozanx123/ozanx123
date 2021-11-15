@@ -1,7 +1,7 @@
 - 👋 Hi, I’m @prosecut0rr
 - 👀 I’m interested in developing blockchains
 - 🌱 I’m currently learning solidity and rust
-- 💞️ I’m looking to collaborate on future blockchain projects
+- 💞️ I’m looking to collaborate on future blockchain projects. Also currently i have product lead experience in a tel-co as digital e-commerce lead. I can be participate to the teams as analyst.
 - 📫 How to reach me @prosecut0rr and prosecutrr2@gmail.com
 
 <!---
