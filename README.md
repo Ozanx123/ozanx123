@@ -1,7 +1,7 @@
-- 👋 Hi, I’m @prosecut0rr
-- 👀 I’m interested in developing blockchains
-- 🌱 I’m currently learning solidity and rust
-- 💞️ I’m looking to collaborate on future blockchain projects. Also currently i have product lead experience in a tel-co as digital e-commerce lead. I can participate to the teams as analyst.
+- 👋 Hi, I’m Ozan
+- 👀 I’m interested in developing future of blockchains
+- 🌱 I’m currently translating Ethereum.org to Turkish
+- 💞️ I’m looking to contribute on future blockchain projects.
 - 📫 How to reach me @0x_Ozan and ozanyilmaz.a@hotmail.com
 
 <!---
