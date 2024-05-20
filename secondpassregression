@@ -1,0 +1,63 @@
+# second_pass_regression.py
+
+import pandas as pd
+import numpy as np
+import statsmodels.api as sm
+from sklearn.linear_model import LinearRegression
+
+# Load the CSV file
+file_path = "returns.csv"  # Replace with your actual file path
+data = pd.read_csv(file_path, delimiter=";")
+
+# Convert decimal commas to decimal points
+data = data.replace({",": "."}, regex=True)
+
+# Convert columns to appropriate types
+data.iloc[:, 1:] = data.iloc[:, 1:].apply(lambda x: x.astype(float))
+
+# Select the independent variable (market returns)
+X = data.iloc[:, 1].values.reshape(-1, 1)  # Independent variable
+
+# Initialize the linear regression model
+model = LinearRegression()
+
+# First-Pass Regression to get betas and idiosyncratic variances
+betas = []
+idiosyncratic_variances = []
+
+for i in range(2, 12):  # Columns 3 to 12
+    y = data.iloc[:, i].values  # Dependent variable
+    model.fit(X, y)
+    betas.append(model.coef_[0])
+    residuals = y - model.predict(X)
+    idiosyncratic_variances.append(np.var(residuals))
+
+# Convert lists to numpy arrays
+betas = np.array(betas).reshape(-1, 1)
+idiosyncratic_variances = np.array(idiosyncratic_variances).reshape(-1, 1)
+
+# Load the final average returns from the saved file
+final_average_returns = pd.read_csv("final_average_returns.csv", header=None)
+average_returns = final_average_returns.iloc[:, 1].values.flatten()
+
+# Debugging: Print the lengths of the arrays
+print(f"Length of average returns: {len(average_returns)}")
+print(f"Length of betas: {len(betas)}")
+print(f"Length of idiosyncratic variances: {len(idiosyncratic_variances)}")
+
+# Ensure the lengths match
+if len(average_returns) == len(betas) == len(idiosyncratic_variances):
+    # Second-Pass Regression: Use betas and idiosyncratic variances as independent variables
+    # and average returns as the dependent variable
+    X_second_pass = np.hstack((betas, idiosyncratic_variances))
+
+    # Add a constant term for the intercept
+    X_second_pass = sm.add_constant(X_second_pass)
+
+    # Perform the regression
+    second_pass_model = sm.OLS(average_returns, X_second_pass).fit()
+
+    # Print the results
+    print(second_pass_model.summary())
+else:
+    print("Error: The lengths of the arrays do not match.")
