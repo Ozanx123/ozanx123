@@ -1,0 +1,43 @@
+import pandas as pd
+import numpy as np
+from sklearn.linear_model import LinearRegression
+
+# Load the CSV file with the correct delimiter and correct the decimal commas
+file_path = "returns.csv"
+data = pd.read_csv(file_path, delimiter=";")
+
+# Convert decimal commas to decimal points
+data = data.replace({",": "."}, regex=True)
+
+# Select the relevant columns for regression
+# Assuming the columns have no headers; if they do, adjust the column names accordingly
+X = data.iloc[:, 1].astype(float).values.reshape(-1, 1)  # Independent variable
+
+
+# Perform linear regression
+model = LinearRegression()
+
+results = []
+for i in range(2, 12):  # Columns 3 to 12
+    y = data.iloc[:, i].astype(float).values  # Dependent variable
+    model.fit(X, y)
+    slope = model.coef_[0]
+    intercept = model.intercept_
+    r_squared = model.score(X, y)
+
+    # Calculate residuals and idiosyncratic variance
+    y_pred = model.predict(X)
+    residuals = y - y_pred
+    idiosyncratic_variance = np.var(residuals)
+
+    # Store results
+    results.append((i, slope, intercept, r_squared, idiosyncratic_variance))
+
+# Get the results
+for col_index, slope, intercept, r_squared, idiosyncratic_variance in results:
+    print(f"Column {col_index + 1} - Dependent Variable Regression:")
+    print(f"  Slope: {slope}")
+    print(f"  Intercept: {intercept}")
+    print(f"  R-squared: {r_squared}")
+    print(f"  Idiosyncratic Variance: {idiosyncratic_variance}")
+    print()
