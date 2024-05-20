@@ -1,0 +1,16 @@
+import pandas as pd
+
+# Load the cleaned_average_returns.csv file
+cleaned_average_returns_path = (
+    "cleaned_average_returns.csv"  # Replace with your actual file path
+)
+cleaned_average_returns = pd.read_csv(cleaned_average_returns_path, header=None)
+
+# Drop the second column
+cleaned_average_returns = cleaned_average_returns.drop(columns=[1])
+
+# Display the cleaned data
+print(cleaned_average_returns)
+
+# Save the cleaned data back to a CSV file
+cleaned_average_returns.to_csv("final_average_returns.csv", header=False, index=False)
